@@ -1,0 +1,27 @@
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style: none;
+}
+#wrap{
+	width: 100%;
+	height: 700px;
+	background: linear-gradient(to top right,rgba(16,203,222,1) ,rgba(226, 23, 253, 1));
+}
+#wrap .login{
+	width: 380px;
+	height: 400px;
+	margin-left: 34%;
+	position: absolute;
+	top: 110px;
+	background-color:rgba(255,255,255,1);
+	border-radius: 10px;
+	
+}
+#wrap .login h4{
+	font-size: 23px;
+	font-weight: 200px;
+	font-family: "宋体";
+	padding-top: 20px;
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.userMapper">
+    <!--用户登录验证-->
+    <select id="loginusers" parameterType="com.po.users" resultType="com.po.users">
+     select * from users where userName = #{userName} AND userPwd=#{userPwd} and userStatue=1
+    </select>
+    <!--管理员登录验证-->
+    <select id="adminlogin" parameterType="com.po.users" resultType="com.po.users">
+     select * from users where userName = #{userName} AND userPwd=#{userPwd} and userStatue=0
+    </select>
+
+    <!--用户注册-->
+    <insert id="saveUser" parameterType="com.po.users">
+        INSERT into users(userName,userPwd,userTel,userAddress,userStatue) VALUES('${userName}','${userPwd}','${userTel}','${userAddress}',1)
+    </insert>
+
+    <!--展示图书-->
+    <select id="showBook" parameterType="Integer" resultType="com.po.books">
+        select * from books where bookId = #{bookId}
+    </select>
+
+    <!--查书-->
+    <select id="findbooksByName" parameterType="com.po.books" resultType="com.po.books">
+    SELECT * FROM books WHERE bookName LIKE concat('%',#{bookName},'%')
+    </select>
+
+    <!--查所有书-->
+    <select id="findAllBook" resultType="com.po.books">
+     select  * from books
+    </select>
+    <!--插入书-->
+    <insert id="insertBook" parameterType="com.po.books">
+  insert  into books(bookName,bookFace,bookCreate,bookPrice,bookAuthor,bookPress)
+  values('${bookName}','${bookFace}','${bookCreate}','${bookPrice}','${bookAuthor}','${bookPress}')
+ </insert>
+    <!--查找总数-->
+    <select id="selectCount" resultType="int">
+   select count(*) from books
+</select>
+<!--分页-->
+    <select id="findByPage" parameterType="Map" resultType="com.po.books">
+        select * from books
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    <!--id查找-->
+    <select id="findBooksById" parameterType="com.po.books" resultType="com.po.books">
+     select * from books where bookId = #{bookId}
+    </select>
+
+    <!--更新书本-->
+    <update id="updateBook" parameterType="com.po.books">
+      update books set bookName='${bookName}',bookFace='${bookFace}',bookCreate='${bookCreate}',bookAuthor='${bookAuthor}',bookPrice='${bookPrice}',bookPress ='${bookPress}' where bookId = #{bookId}
+    </update>
+
+   <!--删除书-->
+    <delete id="delBook" parameterType="com.po.books">
+       delete from books where bookId = #{bookId}
+    </delete>
+
+    <!--id找人，修改资料的前提-->
+    <select id="findUserById" parameterType="int" resultType="com.po.users">
+        select * from users where userId = #{userId}
+    </select>
+
+    <update id="updateUsers" parameterType="com.po.users">
+        update users set userName = '${userName}',userPwd = '${userPwd}',userAddress = '${userAddress}',userTel = '${userTel}'where userId ='${userId}'
+    </update>
+
+    <!--加载完成执行-->
+    <select id="start" resultType="com.po.books">
+        SELECT * FROM books LIMIT 0 , 8;
+    </select>
+
+    <!--添加到购物车-->
+    <insert id="insertShop" parameterType="int">
+        insert into shopcar(bookid,userid) values('${bookId}','${userId}')
+    </insert>
+
+    <!--查看购物车-->
+
+    <select id="selectL" parameterType="int" resultMap="check">
+        select users.userName,books.bookId,books.bookName,books.bookPrice,books.bookImg
+        FROM users ,books,shopcar
+        WHERE
+        users.userId = shopcar.userid
+        AND books.bookId = shopcar.bookid
+        AND users.userId = '${userId}'
+    </select>
+
+    <resultMap id="check" type="users">
+        <id property="userId" column="userId"/>
+        <result property="userName" column="userName" />
+        <collection property="lendbooks" ofType="books">
+            <id property="bookId" column="bookId" />
+            <result property="bookName" column="bookName"/>
+            <result property="bookPrice" column="bookPrice"/>
+            <result property="bookImg" column="bookImg"/>
+        </collection>
+
+    </resultMap>
+
+
+</mapper>

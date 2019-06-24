@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+#bookshow{
+    width: 80%;
+    height: 700px;
+    margin: 0 auto;
+
+}
+#bookshow div{
+    width: 200px;
+    height: 250px;
+    border: 1px solid black;
+    float: left;
+    margin: 35px;
+    opacity: 0.8;
+    margin-left: 90px;
+}
+#bookshow div:hover{
+
+    opacity: 1;
+}
+#bookshow div img{
+    width: 100%;
+    height: 180px;
+
+}
+#bookshow .p1,#bookshow .p2{
+    text-align: center;
+}
